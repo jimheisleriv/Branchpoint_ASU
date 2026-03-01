@@ -4,7 +4,6 @@
 
 init offset = -1
 
-
 ################################################################################
 ## Styles
 ################################################################################
@@ -1621,3 +1620,76 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 600
+
+screen role_select():
+    # Makes it so user cannot click outside this screen
+    modal True
+
+    frame:
+        xalign 0.5 yalign 0.5
+        vbox:
+            text "Select the difficulty"
+            textbutton "Easy" action [SetVariable("gameScript", "Level1"), Notify("Helpdesk Role")]
+            textbutton "Medium" action [SetVariable("gameScript", "Level2"), Notify("Cybersecurity Role")]
+            textbutton "Hard" action [SetVariable("gameScript", "Level3"), Notify("CISO Role")]
+            textbutton "Confirm" action [Show("role_confirm"), Hide("role_select")]
+
+screen role_confirm():
+    modal True
+    frame:
+        xalign 0.5 yalign 0.5
+        vbox:
+            text "Are you sure?"
+            textbutton "Yes" action [Return(), Hide("role_confirm")]
+            textbutton "Actually..." action [Show("role_select"), Hide("role_confirm")]
+
+screen mainGameplayLoop():
+    modal True
+    #CISO Office
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1280
+        ypos 361
+        hovered SetVariable("mainOfficeViewed", True)
+        unhovered SetVariable("mainOfficeViewed", False)
+        action [SetVariable("mainOfficeViewed", False), Jump ("mainOfficeGeneral")]
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1280
+        ypos 414
+        hovered SetVariable("copyRoomViewed", True)
+        unhovered SetVariable("copyRoomViewed", False)
+        action [SetVariable("copyRoomViewed", False), Jump ("copyRoomGeneral")]
+    imagebutton idle "loop_hitbox":
+        anchor (1.0, 0.5)
+        xpos 1280
+        ypos 700
+        hovered SetVariable("titleScreenViewed", True)
+        unhovered SetVariable("titleScreenViewed", False)
+        action [SetVariable("titleScreenViewed", False), Show("titleConfirm"), Hide("mainGameplayLoop")]
+
+screen titleConfirm():
+    modal True
+    frame:
+        xalign 0.5 yalign 0.5
+        vbox:
+            text "Are you sure?"
+            textbutton "Yes" action [Return()]
+            textbutton "Actually..." action [Show("mainGameplayLoop"), Hide("titleConfirm")]
+
+screen eventViewer():
+    modal True
+    frame:
+        xalign 0.5 yalign 0.5
+        vbox:
+            text "[eventText]"
+            textbutton "[response1]" action [SetVariable("talkBack", reply1), Jump("eventConclusion")]
+            textbutton "[response2]" action [SetVariable("talkBack", reply2), Jump("eventConclusion")]
+            textbutton "[response3]" action [SetVariable("talkBack", reply3), Jump("eventConclusion")]
+            textbutton "I'll have to think about it." action [Show("mainGameplayLoop"), Hide("eventViewer")]
+
+
+
+#event response length 4
+#add 4 buttons
+
