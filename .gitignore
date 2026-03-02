@@ -11,3 +11,7 @@ errors.txt
 
 # Web Build output (we don't want the raw build in the repo)
 web-build/
+game/cache/bytecode-312.rpyb
+game/cache/py3analysis.rpyb
+game/cache/screens.rpyb
+game/cache/shaders.txt
