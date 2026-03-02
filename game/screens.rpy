@@ -291,9 +291,8 @@ screen navigation():
     vbox:
         style_prefix "navigation"
 
-        xalign 0.5
+        xpos gui.navigation_xpos
         yalign 0.5
-        yoffset 60
 
         spacing gui.navigation_spacing
 
@@ -344,7 +343,7 @@ style navigation_button:
 
 style navigation_button_text:
     properties gui.text_properties("navigation_button")
-    xalign 0.5
+
 
 ## Main Menu screen ############################################################
 ##
@@ -389,7 +388,7 @@ style main_menu_frame:
     xsize 280
     yfill True
 
-    #background "gui/overlay/main_menu.png"
+    background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
     xalign 1.0
@@ -1644,50 +1643,124 @@ screen role_confirm():
             textbutton "Yes" action [Return(), Hide("role_confirm")]
             textbutton "Actually..." action [Show("role_select"), Hide("role_confirm")]
 
+#Main hub screen. All departments are handled here as imagebuttons.
+#TODO organize the buttons by importance; add a better office building and text background to make these buttons better.
 screen mainGameplayLoop():
+    add "bg mainloop.png"
     modal True
-    #CISO Office
+    #CISO Office button
     imagebutton idle "loop_hitbox":
         anchor(1.0, 0.5)
-        xpos 1280
-        ypos 361
-        hovered SetVariable("mainOfficeViewed", True)
-        unhovered SetVariable("mainOfficeViewed", False)
-        action [SetVariable("mainOfficeViewed", False), Jump ("mainOfficeGeneral")]
+        xpos 1210
+        ypos 75
+        hovered SetVariable("mainOfficeHovered", True)
+        unhovered SetVariable("mainOfficeHovered", False)
+        action [SetVariable("mainOfficeHovered", False), Jump ("mainOfficeSwitch")]
+    #Research and Development button
     imagebutton idle "loop_hitbox":
         anchor(1.0, 0.5)
-        xpos 1280
-        ypos 414
-        hovered SetVariable("copyRoomViewed", True)
-        unhovered SetVariable("copyRoomViewed", False)
-        action [SetVariable("copyRoomViewed", False), Jump ("copyRoomGeneral")]
+        xpos 1210
+        ypos 134
+        hovered SetVariable("researchDevHovered", True)
+        unhovered SetVariable("researchDevHovered", False)
+        action [SetVariable("researchDevHovered", False), Jump ("researchDevSwitch")]
+    #Employee Helpdesk button
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1210
+        ypos 193
+        hovered SetVariable("helpDeskHovered", True)
+        unhovered SetVariable("helpDeskHovered", False)
+        action [SetVariable("helpDeskHovered", False), Jump ("helpDeskSwitch")]
+    #Cybersecurity Dept. button
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1210
+        ypos 252
+        hovered SetVariable("cyberSecHovered", True)
+        unhovered SetVariable("cyberSecHovered", False)
+        action [SetVariable("cyberSecHovered", False), Jump ("cyberSecSwitch")]
+    #Server Room button
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1210
+        ypos 311
+        hovered SetVariable("serverRoomHovered", True)
+        unhovered SetVariable("serverRoomHovered", False)
+        action [SetVariable("serverRoomHovered", False), Jump("serverRoomSwitch")]
+    #Cubicles button
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1210
+        ypos 370
+        hovered SetVariable("cubicleHovered", True)
+        unhovered SetVariable("cubicleHovered", False)
+        action [SetVariable("cubicleHovered", False), Jump ("cubicleSwitch")]
+    #Device Storage button
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1210
+        ypos 429
+        hovered SetVariable("deviceStorageHovered", True)
+        unhovered SetVariable("deviceStorageHovered", False)
+        action [SetVariable("deviceStorageHovered", False), Jump ("deviceStorageSwitch")]
+    #Copy Room button
+    imagebutton idle "loop_hitbox":
+        anchor(1.0, 0.5)
+        xpos 1210
+        ypos 488
+        hovered SetVariable("copyRoomHovered", True)
+        unhovered SetVariable("copyRoomHovered", False)
+        action [SetVariable("copyRoomHovered", False), Jump ("copyRoomSwitch")]
+    #Return to Title button
     imagebutton idle "loop_hitbox":
         anchor (1.0, 0.5)
-        xpos 1280
-        ypos 700
-        hovered SetVariable("titleScreenViewed", True)
-        unhovered SetVariable("titleScreenViewed", False)
-        action [SetVariable("titleScreenViewed", False), Show("titleConfirm"), Hide("mainGameplayLoop")]
+        xpos 1210
+        ypos 690
+        hovered SetVariable("titleScreenHovered", True)
+        unhovered SetVariable("titleScreenHovered", False)
+        action [SetVariable("titleScreenHovered", False), MainMenu(), Hide("mainGameplayLoop")]
 
-screen titleConfirm():
-    modal True
-    frame:
-        xalign 0.5 yalign 0.5
-        vbox:
-            text "Are you sure?"
-            textbutton "Yes" action [Return()]
-            textbutton "Actually..." action [Show("mainGameplayLoop"), Hide("titleConfirm")]
+    #This entire block basically adds the floor-by-floor glow when a button is hovered over. Also adds fun effects for "return to title".
+    if titleScreenHovered == False:
+        add "titleScreenButton.png"
+    if mainOfficeHovered:
+        add "lights/mainOfficeLights.png"
+    elif researchDevHovered:
+        add "lights/researchDevLights.png"
+    elif helpDeskHovered:
+        add "lights/helpDeskLights.png"
+    elif cyberSecHovered:
+        add "lights/cyberSecLights.png"
+    elif serverRoomHovered:
+        add "lights/serverRoomLights.png"
+    elif cubicleHovered:
+        add "lights/cubicleLights.png"
+    elif deviceStorageHovered:
+        add "lights/deviceStorageLights.png"
+    elif copyRoomHovered:
+        add "lights/copyRoomLights.png"
+    elif titleScreenHovered:
+        add "lights/titleScreenLights.png"
 
+#Pulls up the event window, dynamically adds buttons according to the number of pre-programmed responses. God I wish renpy had for-loops.
 screen eventViewer():
-    modal True
     frame:
         xalign 0.5 yalign 0.5
         vbox:
             text "[eventText]"
+            if eventResponses > 4:
+                textbutton "[response5]" action [SetVariable("talkBack", reply5), Jump("eventConclusion")]
+            if eventResponses > 3:
+                textbutton "[response4]" action [SetVariable("talkBack", reply4), Jump("eventConclusion")]
+            if eventResponses > 2:
+                textbutton "[response3]" action [SetVariable("talkBack", reply3), Jump("eventConclusion")]
+            if eventResponses > 1:
+                textbutton "[response2]" action [SetVariable("talkBack", reply2), Jump("eventConclusion")]
             textbutton "[response1]" action [SetVariable("talkBack", reply1), Jump("eventConclusion")]
-            textbutton "[response2]" action [SetVariable("talkBack", reply2), Jump("eventConclusion")]
-            textbutton "[response3]" action [SetVariable("talkBack", reply3), Jump("eventConclusion")]
-            textbutton "ave toI'll h think about it." action [Show("mainGameplayLoop"), Hide("eventViewer")]
+            #Get-out-of-event button, does nothing but return you to the main "hub" screen.
+            textbutton "I'll have to think about it." action [Show("mainGameplayLoop"), Hide("eventViewer")]
+                
 
 
 

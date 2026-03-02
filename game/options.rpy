@@ -23,7 +23,7 @@ define gui.show_name = True
 
 ## The version of the game.
 
-define config.version = "1.0"
+define config.version = "DEMO-0.1a"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
@@ -45,6 +45,7 @@ define build.name = "ProjectBranchpoint"
 ## These three variables control, among other things, which mixers are shown
 ## to the player by default. Setting one of these to False will hide the
 ## appropriate mixer.
+
 define config.developer = True
 define config.has_sound = True
 define config.has_music = True
