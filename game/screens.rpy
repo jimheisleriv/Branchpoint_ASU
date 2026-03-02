@@ -1743,6 +1743,39 @@ screen mainGameplayLoop():
     elif titleScreenHovered:
         add "lights/titleScreenLights.png"
 
+    if officeEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 50
+    if rdEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 108
+    if deskEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 166
+    if cyberEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 224
+    if serverEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 282
+    if cubicleEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 340
+    if storageEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 398
+    if copyEventToView:
+        add "eventmark.png":
+            xpos 1222
+            ypos 456
+
 #Pulls up the event window, dynamically adds buttons according to the number of pre-programmed responses. God I wish renpy had for-loops.
 screen eventViewer():
     frame:
@@ -1759,7 +1792,7 @@ screen eventViewer():
                 textbutton "[response2]" action [SetVariable("talkBack", reply2), Jump("eventConclusion")]
             textbutton "[response1]" action [SetVariable("talkBack", reply1), Jump("eventConclusion")]
             #Get-out-of-event button, does nothing but return you to the main "hub" screen.
-            textbutton "I'll have to think about it." action [Show("mainGameplayLoop"), Hide("eventViewer")]
+            textbutton "I'll have to think about it." action [ShowMenu("mainGameplayLoop"), Hide("eventViewer")]
                 
 
 

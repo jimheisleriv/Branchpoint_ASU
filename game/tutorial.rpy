@@ -46,6 +46,9 @@ label tutorialConclusion:
     g "Well, looks like you're getting the hang of things. I think we'd do well to keep you around even after your time here is up."
     g "That said... I've still got work to do. Come swing by my department if you need a hand."
     g "Otherwise, I think you're on your own for now."
+    "You have now completed the tutorial. When you wish to play the full game, return to the title screen."
+    $ cubicleEventToView = False
+    call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for CISO Office.
 label tutorialOfficeGeneral:
@@ -53,19 +56,21 @@ label tutorialOfficeGeneral:
         g "This is the CISO's office. Maybe you'll end up here one day. This is where a large number of managerial decisions happen, obviously."
         $ departmentsViewed.append("CISO")
     menu:
-        #If event to view, use the name of the event and display it as a button. Does not support multiple events for the same department. Ditto for all other departments.
+        #If event to view, use the name of the event and display it as a button. Does not support multiple events for the same department YET. Ditto for all other departments.
         #TODO: Abstract number of events per department to allow multiple at once. REPEAT THIS TO-DO AD INFINITUM FOR ALL DEPARTMENTS.
         "[event]" if officeEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
-                if tutorialMode and tutorialOfficeBypass == False and len(departmentsViewed) > 7:
-                    g "Well, sometimes all you have to do is give it a minute. There's always something to do around here."
-                    g "Whether or not it's immediately obvious... Well, it usually is."
-                    g "Speak of the devil, looks like something's doing on in the cubicles. Let's go have a look."
-                    $ event = "Stolen cake"
-                    $ cubicleEventToView = True
-                    $ tutorialOfficeBypass = True
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("CISO")
+            jump tutorialOfficeGeneral
+        "... An \"event\"\?" if tutorialMode and len(departmentsViewed) > 7:
+            g "There's always something to do around here."
+            g "Whether or not it's immediately obvious... Well, it usually is."
+            g "Speak of the devil, looks like something's doing on in the cubicles. Let's go have a look."
+            $ event = "Stolen cake"
+            $ cubicleEventToView = True
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for R&D Department.
@@ -74,13 +79,16 @@ label tutorialResDevGeneral:
         g "This is the R&D department. A lot of the future-facing projects are handled here, so treat them with respect. Our future banks on them doing their jobs."
         $ departmentsViewed.append("R&D")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if copyEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("R&D")
+            jump tutorialResDevGeneral
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for Helpdesk.
@@ -89,13 +97,16 @@ label tutorialHelpDeskGeneral:
         g "Welcome to the Help Desk. Were you a regular employee at our company, you'd come here to get your things fixed. Since you're on the other side of the glass, you're gonna be doing the fixing."
         $ departmentsViewed.append("Helpdesk")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if deskEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("Helpdesk")
+            jump tutorialHelpDeskGeneral
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for Cybersecurity.
@@ -104,13 +115,16 @@ label tutorialCyberSecGeneral:
         g "I'm sure the Cybersecurity department needs no introduction. They're the people responsible for making sure everything here stays safe and secure."
         $ departmentsViewed.append("Cybersecurity")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if cyberEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("Cybersecurity")
+            jump tutorialCyberSecGeneral
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for Server Room.
@@ -119,13 +133,16 @@ label tutorialServersGeneral:
         g "This is the Server room. As you might expect, it holds all of our servers. If something goes wrong in here, it might be lights-out for a while."
         $ departmentsViewed.append("Servers")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if serverEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("Servers")
+            jump tutorialServersGeneral
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for Cubicles.
@@ -135,7 +152,7 @@ label tutorialCubicleGeneral:
         g "While you might write this off initially, workplace politics here can get pretty heated. I'd try to avoid that if you can."
         $ departmentsViewed.append("Cubicles")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if cubicleEventToView:
@@ -144,7 +161,14 @@ label tutorialCubicleGeneral:
             "Most importantly, these events are chosen randomly from a pool. You may see the same event four times, not at all, or face impossible tasks. How you handle it is, once again, up to you."
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?" if cubicleEventToView == False:
+            $ departmentsViewed.remove("Cubicles")
+            jump tutorialCubicleGeneral
+        "Could you repeat how the events play out?" if cubicleEventToView == False and event == "Stolen cake":
+            "When handling an event, a list of 2 to 5 options will appear. What response you choose can and will affect your score at the end of the game, and may even end your game early."
+            "Much like the real world, there is, more often than not, no truly correct or incorrect answer."
+            "Most importantly, these events are chosen randomly from a pool. You may see the same event four times, not at all, or face impossible tasks. How you handle it is, once again, up to you."
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for Device Storage.
@@ -154,13 +178,16 @@ label tutorialStorageGeneral:
         g "Well... Now that I think about it, we should probably get you some stuff out of here while we're here."
         $ departmentsViewed.append("Storage")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if storageEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("Storage")
+            jump tutorialStorageGeneral
+        "Never mind.":
                 call screen mainGameplayLoop
 
 #Tutorial label to handle event trees for Copy Room.
@@ -170,11 +197,14 @@ label tutorialCopierGeneral:
         g "You didn't hear that from me though."
         $ departmentsViewed.append("Copier")
     if len(departmentsViewed) > 7 and cisoEventTrigger == False:
-        g "We should go to the CISO's office. I've been told there might be an event there worth looking at."
+        g "We should go to the CISO's office. I've been told there might be an \"event\" there worth looking at."
         $cisoEventTrigger = True
     menu:
         "[event]" if copyEventToView:
             call eventLookup
             call screen eventViewer
-        "Never mind...":
+        "Could you repeat the department's function?":
+            $ departmentsViewed.remove("Copier")
+            jump tutorialCopierGeneral
+        "Never mind.":
                 call screen mainGameplayLoop

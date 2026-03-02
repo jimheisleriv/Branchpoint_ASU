@@ -80,8 +80,7 @@ label eventConclusion:
     if tutorialMode:
         call tutorialConclusion
     $ officeEventToView = False
-    $ copyEventToView = False
-    $ event = ""
+    $ cubicleEventToView = False
     call screen mainGameplayLoop
 
 
