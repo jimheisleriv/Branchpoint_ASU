@@ -3,8 +3,18 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-define e = Character("Eileen")
-define g = Character("Gary")
+#RESERVED CHARACTERS: C/Charlie as CISO for lower roles,
+#define j = Character("John") #CEO
+#define m = Character("Matt") #Storage head
+#define e = Character("Eleanor") #Cubicle head
+define b = Character("Brendan") #Helpdesk head
+define g = Character("Giovanni") #Cybersec head
+#define p = Character("Peter") #R&D head
+#define a = Character("Abigail") #Server head
+#define n = Character("Norman") #Copier head
+
+
+
 default gameScript = "Level1"
 default gameScriptInit = ""
 default tutorialMode = False

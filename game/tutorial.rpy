@@ -1,4 +1,3 @@
-define b = Character("Brendan")
 default departmentsViewed = []
 default tutorialOfficeBypass = False
 default cisoEventTrigger = False
@@ -20,6 +19,8 @@ label tutorial:
 
     scene bg main_hq_hall
 
+    ""
+
     "It's your first day on the job..."
 
     "Despite the fact the keycard in your hand is clearly labeled 'Intern', you're determined to do the job right."
@@ -36,14 +37,16 @@ label tutorial:
 
     b "Well, we're glad to have you! I know this place ain't much, but we hope you'll excel while you're here!"
 
-    b "Personally, I'm about to head to lunch, but I'll hand it off to main-man Gary and he'll show you the ropes."
+    b "Personally, I'm about to head to lunch, but I'll hand it off to our main-man Gary and he'll show you the ropes."
 
     hide b_happy
     show g_mad
 
-    g "Yeah we just kinda keep the beeps beepin and the boops boopin"
+    g "I'm the head of the Cybersecurity department. Doesn't mean a lot since there's only three of us here, but still."
 
-    g "lmao"
+    g "If you have any questions about what each department is, or what it does for us, just ask."
+
+    g "Now then. We have a tour to attend to."
 
     hide g_mad
 
