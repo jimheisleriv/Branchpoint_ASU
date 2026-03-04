@@ -42,7 +42,7 @@ label tutorial:
     hide b_happy
     show g_mad
 
-    g "I'm the head of the Cybersecurity department. Doesn't mean a lot since there's only three of us here, but still."
+    g "I'm the head of the Cybersecurity department. Doesn't mean a lot since there's only three of us Cybersecurity folks here, but still."
 
     g "If you have any questions about what each department is, or what it does for us, just ask."
 
@@ -243,4 +243,5 @@ label tutorialCopierGeneral:
             $ departmentsViewed.remove("Copier")
             jump tutorialCopierGeneral
         "Never mind.":
+
                 call screen mainGameplayLoop
